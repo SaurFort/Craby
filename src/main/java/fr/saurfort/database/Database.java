@@ -21,7 +21,7 @@ public class Database {
         Connection conn = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER +"&password="  + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
 
             return conn.isValid(1);
         } catch (SQLException ex) {
@@ -37,7 +37,7 @@ public class Database {
         Statement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER +"&password="  + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
             stmt = conn.createStatement();
 
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users_messages (" +
@@ -72,7 +72,7 @@ public class Database {
                     " VALUES (?, ?, ?, ?, ?)";
 
             try {
-                conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER +"&password="  + Config.DB_PASSWORD);
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
                 stmt = conn.prepareStatement(query);
 
                 String isoDate = String.valueOf(event.getMessage().getTimeCreated());
@@ -102,7 +102,7 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER +"&password="  + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
             stmt = conn.createStatement();
 
             if(stmt.execute("SELECT * FROM `users_messages` WHERE uuid = '" + target.getId() + "' AND guild_id = '" + member.getGuild().getId() + "' ORDER BY posted_timestamp DESC")) {
@@ -128,7 +128,7 @@ public class Database {
         Statement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER +"&password="  + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
             stmt = conn.createStatement();
 
             stmt.executeUpdate("INSERT INTO `registered` (uuid, guild_id)" +
@@ -146,7 +146,7 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER +"&password="  + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
             stmt = conn.createStatement();
 
             if(stmt.execute("SELECT * FROM registered")) {
@@ -181,7 +181,7 @@ public class Database {
         Statement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER + "&password=" + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
             stmt = conn.createStatement();
 
             stmt.executeUpdate("DELETE FROM `registered` WHERE uuid = '" + member.getId() + "'");
@@ -198,7 +198,7 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER + "&password=" + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + Config.DB_NAME + "?user=" + Config.DB_USER + "&password=" + Config.DB_PASSWORD);
             stmt = conn.createStatement();
 
             if(stmt.execute("SELECT uuid FROM `registered` WHERE guild_id = '" + guild.getId() + "' LIMIT " + Config.REGISTER_LIMIT + ";")) {
@@ -229,7 +229,7 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + Config.DB_NAME + "?user=" + Config.DB_USER + "&password=" + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + Config.DB_NAME + "?user=" + Config.DB_USER + "&password=" + Config.DB_PASSWORD);
             stmt = conn.createStatement();
 
             if(stmt.execute("SELECT uuid FROM `registered` WHERE guild_id = '" + guild.getId() + "' LIMIT " + Config.SUBSTITUTE_LIMIT + " OFFSET " + Config.REGISTER_LIMIT + ";")) {
