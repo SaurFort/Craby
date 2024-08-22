@@ -10,7 +10,8 @@ public class Config {
     public static final int SUBSTITUTE_LIMIT = 10;
 
     // Database config
-    public static final String DB_NAME = "craby";
-    public static final String DB_USER = "root";
-    public static final String DB_PASSWORD = "";
+    //public static final String DB_NAME = "craby";
+    //public static final String DB_USER = "root";
+    //public static final String DB_PASSWORD = "";
+    public static final String DB_PATH = "craby.db";
 }

@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.desktop.SystemSleepEvent;
+import java.io.File;
 import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -21,15 +22,31 @@ public class Database {
         Connection conn = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
 
             return conn.isValid(1);
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
         }
         return false;
+    }
+
+    public static void initializeDatabaseFile() {
+        try {
+            File dbFile = new File(Config.DB_PATH);
+
+            if (!dbFile.exists()) {
+                dbFile.createNewFile();
+                System.out.println("Base de données créée: " + dbFile.getAbsolutePath());
+            } else {
+                System.out.println("Le fichier de la base de données existe déjà.");
+            }
+
+            initializeDatabase();
+
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la création du fichier de base de données: " + e.getMessage());
+        }
     }
 
     public static void initializeDatabase() {
@@ -37,29 +54,27 @@ public class Database {
         Statement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
             stmt = conn.createStatement();
 
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users_messages (" +
-                    "    id INT AUTO_INCREMENT PRIMARY KEY," +
-                    "    uuid BIGINT NOT NULL," +
-                    "    guild_id BIGINT NOT NULL," +
-                    "    channel_id BIGINT NOT NULL," +
+                    "    id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "    uuid TEXT NOT NULL," +
+                    "    guild_id TEXT NOT NULL," +
+                    "    channel_id TEXT NOT NULL," +
                     "    message TEXT NOT NULL," +
-                    "    posted_timestamp DATETIME NOT NULL" +
+                    "    posted_timestamp TEXT NOT NULL" +
                     ");");
             System.out.println("Table `users_messages` initialized successfully");
 
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS registered (" +
-                    "    id INT AUTO_INCREMENT PRIMARY KEY," +
-                    "    uuid BIGINT UNIQUE NOT NULL," +
-                    "    guild_id BIGINT NOT NULL" +
+                    "    id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "    uuid TEXT UNIQUE NOT NULL," +
+                    "    guild_id TEXT NOT NULL" +
                     ");");
             System.out.println("Table `registered` initialized successfully");
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
 
@@ -68,18 +83,14 @@ public class Database {
         PreparedStatement stmt = null;
 
         if(!event.getAuthor().isBot()) {
-            String query = "INSERT INTO `users_messages` (uuid, guild_id, channel_id, message, posted_timestamp)" +
+            String query = "INSERT INTO users_messages (uuid, guild_id, channel_id, message, posted_timestamp)" +
                     " VALUES (?, ?, ?, ?, ?)";
 
             try {
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
+                conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
                 stmt = conn.prepareStatement(query);
 
-                String isoDate = String.valueOf(event.getMessage().getTimeCreated());
-                Instant instant = Instant.parse(isoDate);
-                LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                String formattedDate = dateTime.format(formatter);
+                String formattedDate = event.getMessage().getTimeCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
                 stmt.setString(1, event.getMember().getId());
                 stmt.setString(2, event.getGuild().getId());
@@ -90,8 +101,6 @@ public class Database {
                 stmt.executeUpdate();
             } catch (SQLException ex) {
                 System.out.println("SQLException: " + ex.getMessage());
-                System.out.println("SQLState: " + ex.getSQLState());
-                System.out.println("VendorError: " + ex.getErrorCode());
             }
         }
     }
@@ -102,10 +111,10 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
             stmt = conn.createStatement();
 
-            if(stmt.execute("SELECT * FROM `users_messages` WHERE uuid = '" + target.getId() + "' AND guild_id = '" + member.getGuild().getId() + "' ORDER BY posted_timestamp DESC")) {
+            if(stmt.execute("SELECT * FROM users_messages WHERE uuid = '" + target.getId() + "' AND guild_id = '" + member.getGuild().getId() + "' ORDER BY posted_timestamp DESC LIMIT 1")) {
                 rs = stmt.getResultSet();
                 rs.next();
 
@@ -117,8 +126,6 @@ public class Database {
             }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
         }
         return null;
     }
@@ -128,15 +135,13 @@ public class Database {
         Statement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
             stmt = conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO `registered` (uuid, guild_id)" +
+            stmt.executeUpdate("INSERT INTO registered (uuid, guild_id)" +
                     " VALUES ('" + member.getId() + "', '" + member.getGuild().getId() + "')");
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
 
@@ -146,16 +151,14 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
             stmt = conn.createStatement();
 
-            if(stmt.execute("SELECT * FROM registered")) {
+            if(stmt.execute("SELECT COUNT(*) AS count FROM registered")) {
                 rs = stmt.getResultSet();
+                rs.next();
 
-                int count = 0;
-                while (rs.next()) {
-                    count++;
-                }
+                int count = rs.getInt("count");
 
                 if(count >= Config.REGISTER_LIMIT) {
                     if(count >= Config.REGISTER_LIMIT + Config.SUBSTITUTE_LIMIT) {
@@ -169,8 +172,6 @@ public class Database {
             }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
         }
 
         return "error";
@@ -181,14 +182,12 @@ public class Database {
         Statement stmt = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + Config.DB_NAME, Config.DB_USER, Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
             stmt = conn.createStatement();
 
-            stmt.executeUpdate("DELETE FROM `registered` WHERE uuid = '" + member.getId() + "'");
+            stmt.executeUpdate("DELETE FROM registered WHERE uuid = '" + member.getId() + "'");
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
 
@@ -198,7 +197,7 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + Config.DB_NAME + "?user=" + Config.DB_USER + "&password=" + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
             stmt = conn.createStatement();
 
             if(stmt.execute("SELECT uuid FROM `registered` WHERE guild_id = '" + guild.getId() + "' LIMIT " + Config.REGISTER_LIMIT + ";")) {
@@ -229,7 +228,7 @@ public class Database {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/" + Config.DB_NAME + "?user=" + Config.DB_USER + "&password=" + Config.DB_PASSWORD);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
             stmt = conn.createStatement();
 
             if(stmt.execute("SELECT uuid FROM `registered` WHERE guild_id = '" + guild.getId() + "' LIMIT " + Config.SUBSTITUTE_LIMIT + " OFFSET " + Config.REGISTER_LIMIT + ";")) {

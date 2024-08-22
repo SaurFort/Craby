@@ -23,8 +23,8 @@ public class Craby {
         new CommandLister(jda);
 
         if(!Database.checkConnection()) {
-            System.out.println("Database is not connected");
-            System.exit(1);
+            System.out.println("Database creation in progress");
+            Database.initializeDatabaseFile();
         } else {
             System.out.println("Database is connected");
             Database.initializeDatabase();
