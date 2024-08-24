@@ -11,7 +11,7 @@ public class Ping {
 
     public Ping(SlashCommandInteraction event) {
         long time = System.currentTimeMillis();
-        event.getJDA().installAuxiliaryPort().queue();
+        //event.getJDA().installAuxiliaryPort().queue();
         event.reply("Pong!").setEphemeral(true)
                 .flatMap(v ->
                         event.getHook().editOriginalFormat(":ping_pong: Pong: %d ms", System.currentTimeMillis() - time)

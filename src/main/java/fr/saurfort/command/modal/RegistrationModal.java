@@ -23,8 +23,8 @@ public class RegistrationModal extends ListenerAdapter {
                     .build();
             TextInput id = TextInput.create("id", "ID", TextInputStyle.SHORT)
                     .setPlaceholder("Votre ID sur Clash Royale")
-                    .setMinLength(9)
-                    .setMaxLength(10)
+                    .setMinLength(2)
+                    .setMaxLength(15)
                     .build();
 
             Modal modal = Modal.create("registration", "S'inscrire")

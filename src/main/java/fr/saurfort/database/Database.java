@@ -24,7 +24,10 @@ public class Database {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + Config.DB_PATH);
 
-            return conn.isValid(1);
+            if(conn.isValid(1)) {
+                conn.close();
+                return true;
+            }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
         }
@@ -72,6 +75,8 @@ public class Database {
                     "    uuid TEXT UNIQUE NOT NULL," +
                     "    guild_id TEXT NOT NULL" +
                     ");");
+
+            conn.close();
             System.out.println("Table `registered` initialized successfully");
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
@@ -99,6 +104,7 @@ public class Database {
                 stmt.setString(5, formattedDate);
 
                 stmt.executeUpdate();
+                conn.close();
             } catch (SQLException ex) {
                 System.out.println("SQLException: " + ex.getMessage());
             }
@@ -122,6 +128,8 @@ public class Database {
                 result.add(rs.getString("channel_id"));
                 result.add(rs.getString("message"));
                 result.add(rs.getString("posted_timestamp"));
+
+                conn.close();
                 return result;
             }
         } catch (SQLException ex) {
@@ -140,6 +148,8 @@ public class Database {
 
             stmt.executeUpdate("INSERT INTO registered (uuid, guild_id)" +
                     " VALUES ('" + member.getId() + "', '" + member.getGuild().getId() + "')");
+
+            conn.close();
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
         }
@@ -160,6 +170,7 @@ public class Database {
 
                 int count = rs.getInt("count");
 
+                conn.close();
                 if(count >= Config.REGISTER_LIMIT) {
                     if(count >= Config.REGISTER_LIMIT + Config.SUBSTITUTE_LIMIT) {
                         return "max";
@@ -186,6 +197,8 @@ public class Database {
             stmt = conn.createStatement();
 
             stmt.executeUpdate("DELETE FROM registered WHERE uuid = '" + member.getId() + "'");
+
+            conn.close();
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
         }
@@ -209,6 +222,7 @@ public class Database {
                     membersList.append(member.getAsMention()).append("\n");
                 }
 
+                conn.close();
                 return membersList.toString();
             } else {
                 return null;
@@ -240,6 +254,7 @@ public class Database {
                     membersList.append(member.getAsMention()).append("\n");
                 }
 
+                conn.close();
                 return membersList.toString();
             } else {
                 return null;

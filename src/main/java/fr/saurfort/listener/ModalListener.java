@@ -23,15 +23,17 @@ public class ModalListener extends ListenerAdapter {
             if(event.getMember().isOwner()) {
                 event.reply("Désolé maitre ! Mais je ne peux pas faire ça, je ne suis qu'un crabe. :face_with_diagonal_mouth:").setEphemeral(true).queue();
             } else {
-                Role role = event.getGuild().getRoleById("1270066037131575408");
-
                 Guild guild = event.getGuild();
 
+                Role role = guild.getRoleById(1270066037131575408L);
+
+                //System.out.println(role);
+
                 TextChannel logChannel = guild.getTextChannelById(1269718846080815159L);
-                TextChannel chatChannel = guild.getTextChannelById(1269718729701462129L);
+                //TextChannel chatChannel = guild.getTextChannelById(1269718729701462129L);
 
                 event.getMember().modifyNickname(username + " (" + id + ")").queue();
-                guild.addRoleToMember(event.getMember(), role).queue();
+                guild.modifyMemberRoles(event.getMember(), role).queue();
 
                 if(Database.canRegister().equals("substitute")) {
                     logChannel.sendMessage("Le joueur" + event.getMember().getAsMention() + " vient de s'inscrire à la liste de remplacement !").queue();
