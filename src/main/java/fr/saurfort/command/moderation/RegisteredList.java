@@ -20,10 +20,10 @@ public class RegisteredList extends ListenerAdapter {
             if(!event.getMember().hasPermission(PERMISSION)) {
                 event.reply("Vous n'avez pas les permissions pour voir ça, petit coquin :smirk:").setEphemeral(true).queue();
             } else {
+                event.deferReply().queue();
+                
                 String membersList = Database.listRegisteredMember(event.getGuild());
                 String substituteList = Database.listSubstituteMember(event.getGuild());
-
-                event.deferReply().queue();
 
                 if(!membersList.isEmpty()) {
                     EmbedBuilder eb1 = new EmbedBuilder();
