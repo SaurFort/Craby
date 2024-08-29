@@ -1,6 +1,16 @@
 # Craby
 
-Craby est un bot discord fait en Java pour un tournoi sur Clash Royale nommé : `Le Tournoi des Crabes de Gaule`.
+Craby is a Java discord bot for a Clash Royale tournament called `Le Tournoi des Crabes de Gaule`.
 
-> [!NOTE]\
-> Ce bot a été conçu avec des besoins très spécifiques donc il n'est pas forcément adapter pour l'utilisation de tout le monde.
+> [!NOTE]
+> This bot has been designed to meet very specific needs, so it may not be suitable for everyone.
+
+## Goal
+
+- Add communication with the Clash Royale API using [Java CR API 2 (jcrapi2)](https://github.com/mlieshoff/jcrapi2)
+- Improve configurations
+- Added support for SQLite and MySQL
+- Added support for multiple guilds
+- Improved role management
+- Added command for posting Embeds
+- Added mini-games
