@@ -1,9 +1,9 @@
 package fr.saurfort.command.utils;
 
-import fr.saurfort.command.modal.RegistrationModal;
+import fr.saurfort.modal.creator.RegistrationModal;
 import fr.saurfort.command.moderation.LastMessage;
 import fr.saurfort.command.moderation.RegisteredList;
-import fr.saurfort.command.moderation.Unregister;
+import fr.saurfort.command.moderation.ForcedUnregister;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -26,7 +26,7 @@ public class Help extends ListenerAdapter {
 
             eb.setTitle("Liste des commandes");
             eb.setColor(Color.ORANGE);
-            eb.setDescription("### Tournoi\n - `" + RegistrationModal.NAME + "` : " + RegistrationModal.DESCRIPTION + "\n\n### Utilitaire :tools:\n - `" + Help.NAME + "` : " + Help.DESCRIPTION + "\n - `" + Ping.NAME + "` : " + Ping.DESCRIPTION + "\n\n### Modération :cop:\n - `" + LastMessage.NAME + "` : " + LastMessage.DESCRIPTION + "\n - `" + RegisteredList.NAME + "` : " + RegisteredList.DESCRIPTION + "\n - `" + Unregister.NAME + "` : " + Unregister.DESCRIPTION);
+            eb.setDescription("### Tournoi\n - `" + RegistrationModal.NAME + "` : " + RegistrationModal.DESCRIPTION + "\n\n### Utilitaire :tools:\n - `" + Help.NAME + "` : " + Help.DESCRIPTION + "\n - `" + Ping.NAME + "` : " + Ping.DESCRIPTION + "\n\n### Modération :cop:\n - `" + LastMessage.NAME + "` : " + LastMessage.DESCRIPTION + "\n - `" + RegisteredList.NAME + "` : " + RegisteredList.DESCRIPTION + "\n - `" + ForcedUnregister.NAME + "` : " + ForcedUnregister.DESCRIPTION);
             eb.setFooter(event.getMember().getNickname(), event.getMember().getAvatarUrl());
 
             event.getHook().sendMessageEmbeds(eb.build()).queue();

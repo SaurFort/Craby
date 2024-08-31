@@ -27,10 +27,7 @@ public class ModalListener extends ListenerAdapter {
 
                 Role role = guild.getRoleById(1270066037131575408L);
 
-                //System.out.println(role);
-
                 TextChannel logChannel = guild.getTextChannelById(1269718846080815159L);
-                //TextChannel chatChannel = guild.getTextChannelById(1269718729701462129L);
 
                 event.getMember().modifyNickname(username + " (" + id + ")").queue();
                 guild.modifyMemberRoles(event.getMember(), role).queue();

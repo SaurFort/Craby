@@ -2,14 +2,17 @@ package fr.saurfort.listener;
 
 import fr.saurfort.command.moderation.LastMessage;
 import fr.saurfort.command.moderation.RegisteredList;
-import fr.saurfort.command.moderation.Unregister;
+import fr.saurfort.command.moderation.ForcedUnregister;
 import fr.saurfort.command.utils.Help;
 import fr.saurfort.command.utils.Ping;
-import fr.saurfort.command.modal.RegistrationModal;
+import fr.saurfort.database.query.MySQLLastMessage;
+import fr.saurfort.modal.creator.RegistrationModal;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class CommandListener extends ListenerAdapter {
+public class EventListener extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         switch (event.getName()) {
@@ -18,7 +21,7 @@ public class CommandListener extends ListenerAdapter {
                 new Help().onSlashCommandInteraction(event);
                 break;
             case "ping":
-                new Ping(event);
+                new Ping().execute(event);
                 break;
 
             // Modal
@@ -34,10 +37,21 @@ public class CommandListener extends ListenerAdapter {
                 new RegisteredList().onSlashCommandInteraction(event);
                 break;
             case "unregister":
-                new Unregister().onSlashCommandInteraction(event);
+                new ForcedUnregister().onSlashCommandInteraction(event);
                 break;
             default:
                 System.out.printf("Unknown command %s used by %#s%n", event.getName(), event.getUser());
+        }
+    }
+
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if(event.isFromType(ChannelType.PRIVATE)) {
+            event.getMessage().getChannel().sendMessage("Désolé, mais je n'aime pas beaucoup les messages privées des gens que je connais pas. :face_with_diagonal_mouth:");
+        } else {
+            //System.out.printf("[%s][%s] %s: %s\n", event.getGuild().getName(), event.getChannel().getName(), event.getMember().getEffectiveName(), event.getMessage().getContentDisplay());
+
+            new MySQLLastMessage(event.getGuild(), event.getMember(), event.getChannel().asTextChannel(), event.getMessage());
         }
     }
 }

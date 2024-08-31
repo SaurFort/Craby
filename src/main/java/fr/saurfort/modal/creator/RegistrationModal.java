@@ -1,4 +1,4 @@
-package fr.saurfort.command.modal;
+package fr.saurfort.modal.creator;
 
 import fr.saurfort.database.Database;
 import net.dv8tion.jda.api.Permission;

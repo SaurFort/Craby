@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
-public class Unregister extends ListenerAdapter {
+public class ForcedUnregister extends ListenerAdapter {
     public static final String NAME = "unregister";
     public static final String DESCRIPTION = "Désinscrire un joueur";
     public static final Permission PERMISSION = Permission.MANAGE_ROLES;

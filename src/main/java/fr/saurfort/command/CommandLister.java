@@ -2,10 +2,10 @@ package fr.saurfort.command;
 
 import fr.saurfort.command.moderation.LastMessage;
 import fr.saurfort.command.moderation.RegisteredList;
-import fr.saurfort.command.moderation.Unregister;
+import fr.saurfort.command.moderation.ForcedUnregister;
 import fr.saurfort.command.utils.Help;
 import fr.saurfort.command.utils.Ping;
-import fr.saurfort.command.modal.RegistrationModal;
+import fr.saurfort.modal.creator.RegistrationModal;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -30,9 +30,9 @@ public class CommandLister {
                 Commands.slash(RegisteredList.NAME, RegisteredList.DESCRIPTION)
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(RegisteredList.PERMISSION))
                         .setGuildOnly(RegisteredList.GUILD_ONLY),
-                Commands.slash(Unregister.NAME, Unregister.DESCRIPTION)
-                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Unregister.PERMISSION))
-                        .setGuildOnly(Unregister.GUILD_ONLY)
+                Commands.slash(ForcedUnregister.NAME, ForcedUnregister.DESCRIPTION)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(ForcedUnregister.PERMISSION))
+                        .setGuildOnly(ForcedUnregister.GUILD_ONLY)
                         .addOption(OptionType.USER, "user", "Utilisateur à désinscrire", true)
         ).queue();
     }

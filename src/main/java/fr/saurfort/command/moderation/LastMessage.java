@@ -1,12 +1,13 @@
 package fr.saurfort.command.moderation;
 
-import fr.saurfort.database.Database;
+import fr.saurfort.command.CommandBuilder;
+import fr.saurfort.database.query.MySQLLastMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
-import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -14,14 +15,31 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-public class LastMessage {
-    public static final String NAME = "lastmessage";
-    public static final String DESCRIPTION = "Obtient les infos du dernier message d'un utilisateur";
-    public static final Permission PERMISSION = Permission.MESSAGE_MANAGE;
-    public static final boolean GUILD_ONLY = true;
+public class LastMessage implements CommandBuilder {
 
-    public LastMessage(SlashCommandInteraction event) {
-        if(!event.getMember().hasPermission(PERMISSION)) {
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
+    public Permission getPermission() {
+        return null;
+    }
+
+    @Override
+    public boolean getGuildOnly() {
+        return false;
+    }
+
+    @Override
+    public void execute(SlashCommandInteractionEvent event) {
+        if(!event.getMember().hasPermission(getPermission())) {
             event.reply("Vous ne pouvez pas utilisez cette commande ! Dommage :wink:").setEphemeral(true).queue();
         } else {
             User target = event.getOption("user", OptionMapping::getAsUser);
@@ -31,7 +49,7 @@ public class LastMessage {
                 event.reply("Bah, je vais pas espionner des machines, vous vous attendiez à quoi ? :joy:").setEphemeral(true).queue();
             } else {
                 event.deferReply().queue();
-                List<Object> result = Database.getLastTimeUserMessage(target, member);
+                List<Object> result = MySQLLastMessage.getLastTimeUserMessage(target, member);
 
                 if(result == null) {
                     event.getHook().editOriginal("Je ne sais pas si je suis un mauvais espion, mais je ne l'ai pas vu parlé ! :saluting_face:").queue();
