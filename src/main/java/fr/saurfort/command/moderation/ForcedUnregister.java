@@ -1,6 +1,5 @@
 package fr.saurfort.command.moderation;
 
-import fr.saurfort.database.Database;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;

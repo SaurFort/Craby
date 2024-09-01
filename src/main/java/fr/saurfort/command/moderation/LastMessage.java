@@ -19,22 +19,22 @@ public class LastMessage implements CommandBuilder {
 
     @Override
     public String getName() {
-        return null;
+        return "lastmessage";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Affiche le dernier message d'un joueur";
     }
 
     @Override
     public Permission getPermission() {
-        return null;
+        return Permission.MESSAGE_MANAGE;
     }
 
     @Override
     public boolean getGuildOnly() {
-        return false;
+        return true;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LastMessage implements CommandBuilder {
                 event.reply("Bah, je vais pas espionner des machines, vous vous attendiez à quoi ? :joy:").setEphemeral(true).queue();
             } else {
                 event.deferReply().queue();
-                List<Object> result = MySQLLastMessage.getLastTimeUserMessage(target, member);
+                List<Object> result = MySQLLastMessage.getLastTimeUserMessage(member);
 
                 if(result == null) {
                     event.getHook().editOriginal("Je ne sais pas si je suis un mauvais espion, mais je ne l'ai pas vu parlé ! :saluting_face:").queue();

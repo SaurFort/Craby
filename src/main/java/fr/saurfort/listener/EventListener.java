@@ -6,7 +6,7 @@ import fr.saurfort.command.moderation.ForcedUnregister;
 import fr.saurfort.command.utils.Help;
 import fr.saurfort.command.utils.Ping;
 import fr.saurfort.database.query.MySQLLastMessage;
-import fr.saurfort.modal.creator.RegistrationModal;
+import fr.saurfort.modal.creator.RegisterModalCreator;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -26,15 +26,15 @@ public class EventListener extends ListenerAdapter {
 
             // Modal
             case "register":
-                new RegistrationModal().onSlashCommandInteraction(event);
+                new RegisterModalCreator().onSlashCommandInteraction(event);
                 break;
 
             // Moderation
             case "lastmessage":
-                new LastMessage(event);
+                new LastMessage().execute(event);
                 break;
             case "registeredlist":
-                new RegisteredList().onSlashCommandInteraction(event);
+                new RegisteredList().execute(event);
                 break;
             case "unregister":
                 new ForcedUnregister().onSlashCommandInteraction(event);

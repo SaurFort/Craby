@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 
-public class RegistrationModal extends ListenerAdapter {
+public class RegisterModalCreator extends ListenerAdapter {
     public static final String NAME = "register";
     public static final String DESCRIPTION = "Affiche le formulaire d'inscription";
     public static final long PERMISSION = Permission.ALL_PERMISSIONS;
