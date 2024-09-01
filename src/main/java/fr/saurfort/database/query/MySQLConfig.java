@@ -13,21 +13,63 @@ import java.sql.SQLException;
 public class MySQLConfig {
     private static Connection conn = MySQLDatabase.conn;
 
-    public static void registrationConfig(Guild guild, TextChannel logChannel, TextChannel registrationChannel, Role registrationRole) {
-        String query = "INSERT INTO register_config (guild_id, log_channel, register_channel, register_role)" +
-                "VALUES (?,?,?,?)";
+    public static boolean configExist(Guild guild) {
+        String query = "SELECT id FROM register_config WHERE guild_id = ?";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, guild.getId());
-            stmt.setString(2, logChannel.getId());
-            stmt.setString(3, registrationChannel.getId());
-            stmt.setString(4, registrationRole.getId());
 
-            stmt.executeUpdate();
+            stmt.execute();
+            ResultSet rs = stmt.getResultSet();
+            rs.next();
+
+            if(rs.getString("id") != null) {
+                return true;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public static void registrationConfig(Guild guild, TextChannel logChannel, TextChannel registrationChannel, Role registrationRole, int registerLimit, int substituteLimit) {
+        if(!configExist(guild)) {
+            String query = "INSERT INTO register_config (guild_id, log_channel, register_channel, register_role, register_limit, substitute_limit)" +
+                    "VALUES (?,?,?,?,?,?)";
+
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setString(1, guild.getId());
+                stmt.setString(2, logChannel.getId());
+                stmt.setString(3, registrationChannel.getId());
+                stmt.setString(4, registrationRole.getId());
+                stmt.setInt(5, registerLimit);
+                stmt.setInt(6, substituteLimit);
+
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            String query = "UPDATE register_config SET log_channel = ?, register_channel = ?, register_role = ?, register_limit = ?, substitute_limit = ? WHERE guild_id = ?";
+
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
+
+                stmt.setString(1, guild.getId());
+                stmt.setString(2, logChannel.getId());
+                stmt.setString(3, registrationChannel.getId());
+                stmt.setString(4, registrationRole.getId());
+                stmt.setInt(5, registerLimit);
+                stmt.setInt(6, substituteLimit);
+
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

@@ -17,8 +17,8 @@ public class Craby {
         ConfigLoader config = new ConfigLoader();
 
         JDA jda = JDABuilder
-                .createLight(Config.TOKEN)
-                .disableIntents(Arrays.asList(GatewayIntent.values()))
+                .createLight(config.getProperty("bot.token"))
+                .enableIntents(Arrays.asList(GatewayIntent.values()))
                 .addEventListeners(new EventListener())
                 .setActivity(Activity.playing("Clash Royale"))
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)

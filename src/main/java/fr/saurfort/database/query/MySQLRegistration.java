@@ -111,7 +111,61 @@ public class MySQLRegistration {
         }
     }
 
+    public static void register(Guild guild, Member member) {
+        String query = "INSERT INTO registered (uuid, guild_id)";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, member.getId());
+            stmt.setString(2, guild.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void unregister(Guild guild, Member member) {
-        
+        String query = "DELETE FROM registered WHERE guild_id = ? AND uuid = ?";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, guild.getId());
+            stmt.setString(2, member.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String canRegister(Guild guild) {
+        String query = "SELECT COUNT(*) AS count FROM registered WHERE guild_id = ?";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            stmt.setString(1, guild.getId());
+
+            stmt.execute();
+            ResultSet rs = stmt.getResultSet();
+            rs.next();
+
+            int count = rs.getInt("count");
+
+            if(count >= MySQLConfig.getRegisterLimit(guild)) {
+                if(count >= MySQLConfig.getRegisterLimit(guild) + MySQLConfig.getSubstituteLimit(guild)) {
+                    return "max";
+                } else {
+                    return "substitute";
+                }
+            } else {
+                return "can";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
