@@ -25,19 +25,6 @@ public class EventListener extends ListenerAdapter {
                 new RegisterConfig().execute(event);
                 break;
 
-            // Utils
-            case "help":
-                new Help().execute(event);
-                break;
-            case "ping":
-                new Ping().execute(event);
-                break;
-
-            // Modal
-            case "register":
-                new Register().execute(event);
-                break;
-
             // Moderation
             case "lastmessage":
                 new LastMessage().execute(event);
@@ -45,8 +32,21 @@ public class EventListener extends ListenerAdapter {
             case "registeredlist":
                 new RegisteredList().execute(event);
                 break;
-            case "unregister":
+            case "forcedunregister":
                 new ForcedUnregister().execute(event);
+                break;
+
+            // Tournament
+            case "register":
+                new Register().execute(event);
+                break;
+
+            // Utils
+            case "help":
+                new Help().execute(event);
+                break;
+            case "ping":
+                new Ping().execute(event);
                 break;
             default:
                 System.out.printf("Unknown command %s used by %#s%n", event.getName(), event.getUser());

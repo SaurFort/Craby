@@ -12,12 +12,20 @@ public class ConfigInit {
 
     public ConfigInit(Properties configFile) {
         String botToken;
+        String databaseAddress;
+        String databasePort;
         String database;
         String databaseUsername;
         String databasePassword;
 
         System.out.println("What is your bot token?");
         botToken = Scanner.stringScanner();
+
+        System.out.println("What is your database address? (without port)");
+        databaseAddress = Scanner.stringScanner();
+
+        System.out.println("What is your database port?");
+        databasePort = Scanner.stringScanner();
 
         System.out.println("What is the name of your database?");
         database = Scanner.stringScanner();
@@ -29,6 +37,7 @@ public class ConfigInit {
         databasePassword = Scanner.stringScanner();
 
         configFile.setProperty("bot.token", botToken);
+        configFile.setProperty("db.address", databaseAddress + ":" + databasePort);
         configFile.setProperty("db.name", database);
         configFile.setProperty("db.username", databaseUsername);
         configFile.setProperty("db.password", databasePassword);

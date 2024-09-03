@@ -10,9 +10,7 @@ public class MySQLDatabase {
     private static final String[] REQUIRED_TABLES = {"register_config", "users_messages", "registered"};
 
     public MySQLDatabase(String username, String password, String endpoint, String databaseName) {
-        // Encode le mot de passe pour éviter les problèmes avec les caractères spéciaux
         String encodedPassword = URLEncoder.encode(password, StandardCharsets.UTF_8);
-        // Construit l'URL de connexion
         this.databaseAddress = "jdbc:mysql://" + username + ":" + encodedPassword + "@" + endpoint + "/" + databaseName;
 
         try {
@@ -22,7 +20,6 @@ public class MySQLDatabase {
         }
 
         if (!checkDatabaseInstallation()) {
-            // Si la base de données n'est pas encore installée, initialiser les tables
             initializeTables();
         } else {
             System.out.println("The database is already installed!");
