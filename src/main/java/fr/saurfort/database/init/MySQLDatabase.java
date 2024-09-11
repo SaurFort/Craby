@@ -9,9 +9,9 @@ public class MySQLDatabase {
     public static Connection conn;
     private static final String[] REQUIRED_TABLES = {"register_config", "users_messages", "registered"};
 
-    public MySQLDatabase(String username, String password, String endpoint, String databaseName) {
+    public MySQLDatabase(String username, String password, String address, String port, String databaseName) {
         String encodedPassword = URLEncoder.encode(password, StandardCharsets.UTF_8);
-        this.databaseAddress = "jdbc:mysql://" + username + ":" + encodedPassword + "@" + endpoint + "/" + databaseName;
+        this.databaseAddress = "jdbc:mysql://" + username + ":" + encodedPassword + "@" + address + ":" + port + "/" + databaseName;
 
         try {
             conn = DriverManager.getConnection(databaseAddress);

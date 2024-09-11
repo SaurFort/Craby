@@ -21,11 +21,10 @@ public class MySQLConfig {
 
             stmt.setString(1, guild.getId());
 
-            stmt.execute();
-            ResultSet rs = stmt.getResultSet();
+            ResultSet rs = stmt.executeQuery();
             rs.next();
 
-            if(rs.getString("id") != null) {
+            if(rs.getString("guild_id") != null) {
                 return true;
             }
         } catch (SQLException e) {
@@ -35,9 +34,8 @@ public class MySQLConfig {
     }
 
     public static void registrationConfig(Guild guild, TextChannel logChannel, TextChannel registrationChannel, Role registrationRole, int registerLimit, int substituteLimit) {
-        if(!configExist(guild)) {
-            String query = "INSERT INTO register_config (guild_id, log_channel, register_channel, register_role, register_limit, substitute_limit)" +
-                    "VALUES (?,?,?,?,?,?)";
+        if(configExist(guild)) {
+            String query = "UPDATE register_config SET log_channel = ?, register_channel = ?, register_role = ?, register_limit = ?, substitute_limit = ? WHERE guild_id = ?";
 
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
@@ -54,7 +52,8 @@ public class MySQLConfig {
                 throw new RuntimeException(e);
             }
         } else {
-            String query = "UPDATE register_config SET log_channel = ?, register_channel = ?, register_role = ?, register_limit = ?, substitute_limit = ? WHERE guild_id = ?";
+            String query = "INSERT INTO register_config (guild_id, log_channel, register_channel, register_role, register_limit, substitute_limit)" +
+                    "VALUES (?,?,?,?,?,?)";
 
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);

@@ -24,7 +24,7 @@ public class Craby {
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .build();
 
-        new MySQLDatabase(config.getProperty("db.username"), config.getProperty("db.password"), config.getProperty("db.address"), config.getProperty("db.name"));
+        new MySQLDatabase(config.getProperty("db.username"), config.getProperty("db.password"), config.getProperty("db.address"), config.getProperty("db.port"), config.getProperty("db.name"));
 
         new CommandLister(jda);
     }

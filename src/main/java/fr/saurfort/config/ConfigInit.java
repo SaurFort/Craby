@@ -37,7 +37,8 @@ public class ConfigInit {
         databasePassword = Scanner.stringScanner();
 
         configFile.setProperty("bot.token", botToken);
-        configFile.setProperty("db.address", databaseAddress + ":" + databasePort);
+        configFile.setProperty("db.address", databaseAddress);
+        configFile.setProperty("db.port", databasePort);
         configFile.setProperty("db.name", database);
         configFile.setProperty("db.username", databaseUsername);
         configFile.setProperty("db.password", databasePassword);
