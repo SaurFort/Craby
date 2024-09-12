@@ -7,17 +7,14 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 
 public class RegisterModalCreator {
     public static Modal registerModalCreator() {
-        TextInput username = TextInput.create("username", "Username", TextInputStyle.SHORT)
-                .setPlaceholder("Votre nom d'utilisateur sur Clash Royale")
-                .build();
         TextInput id = TextInput.create("id", "ID", TextInputStyle.SHORT)
                 .setPlaceholder("Votre ID sur Clash Royale")
-                .setMinLength(2)
+                .setMinLength(3)
                 .setMaxLength(15)
                 .build();
 
         return Modal.create("registration", "S'inscrire")
-                .addComponents(ActionRow.of(username), ActionRow.of(id))
+                .addComponents(ActionRow.of(id))
                 .build();
     }
 }

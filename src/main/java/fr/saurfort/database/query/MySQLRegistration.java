@@ -112,7 +112,8 @@ public class MySQLRegistration {
     }
 
     public static void register(Guild guild, Member member) {
-        String query = "INSERT INTO registered (uuid, guild_id)";
+        String query = "INSERT INTO registered (uuid, guild_id)" +
+                "VALUES (?,?)";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(query);

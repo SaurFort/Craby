@@ -1,9 +1,7 @@
 package fr.saurfort.listener;
 
 import fr.saurfort.command.config.RegisterConfig;
-import fr.saurfort.command.moderation.LastMessage;
-import fr.saurfort.command.moderation.RegisteredList;
-import fr.saurfort.command.moderation.ForcedUnregister;
+import fr.saurfort.command.moderation.*;
 import fr.saurfort.command.tournament.Register;
 import fr.saurfort.command.utils.Help;
 import fr.saurfort.command.utils.Ping;
@@ -26,14 +24,20 @@ public class EventListener extends ListenerAdapter {
                 break;
 
             // Moderation
+            case "clear":
+                new Clear().execute(event);
+                break;
+            case "forcedregister":
+                new ForcedRegister().execute(event);
+                break;
+            case "forcedunregister":
+                new ForcedUnregister().execute(event);
+                break;
             case "lastmessage":
                 new LastMessage().execute(event);
                 break;
             case "registeredlist":
                 new RegisteredList().execute(event);
-                break;
-            case "forcedunregister":
-                new ForcedUnregister().execute(event);
                 break;
 
             // Tournament

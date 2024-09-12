@@ -76,7 +76,7 @@ public class RegisterConfig implements CommandBuilder {
         eb.setColor(Color.BLUE);
 
         if(substituteLimit > 0) {
-            eb.setDescription("Les inscriptions ont été configuré avec succès !\nSalon des logs : " + logChannel.getAsMention() + "\nSalon des inscriptions : " + registrationChannel.getAsMention() + "\nRôle des inscrits : " + registered.getAsMention() + "\nLimite d'inscription : " + registerLimit + "\nLimit de remplaçant : " + substituteLimit);
+            eb.setDescription("Les inscriptions ont été configuré avec succès !\nSalon des logs : " + logChannel.getAsMention() + "\nSalon des inscriptions : " + registrationChannel.getAsMention() + "\nRôle des inscrits : " + registered.getAsMention() + "\nLimite d'inscription : " + registerLimit + "\nLimite de remplaçant : " + substituteLimit);
         } else {
             eb.setDescription("Les inscriptions ont été configuré avec succès !\nSalon des logs : " + logChannel.getAsMention() + "\nSalon des inscriptions : " + registrationChannel.getAsMention() + "\nRôle des inscrits : " + registered.getAsMention() + "\nLimite d'inscription : " + registerLimit + "\n\nAucune limite de remplaçants n'a été défini.");
         }

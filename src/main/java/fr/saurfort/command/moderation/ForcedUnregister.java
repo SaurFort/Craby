@@ -1,6 +1,7 @@
 package fr.saurfort.command.moderation;
 
 import fr.saurfort.command.CommandBuilder;
+import fr.saurfort.database.query.MySQLConfig;
 import fr.saurfort.database.query.MySQLRegistration;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -32,28 +33,24 @@ public class ForcedUnregister implements CommandBuilder {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if(!event.getMember().hasPermission(getPermission())) {
-            event.reply("Vous ne pouvez pas désinscrire des gens sans avoir les permissions voyons, c'est pas gentil :sad:").setEphemeral(true).queue();
+        User target = event.getOption("user", OptionMapping::getAsUser);
+        Member member = event.getOption("user", OptionMapping::getAsMember);
+        Role role = event.getGuild().getRoleById(MySQLConfig.getRegisteredRole(event.getGuild()));
+
+        if(!event.getMember().canInteract(member)) {
+            event.reply("Étrangement, vous ne pouvez pas interagir avec ce membre :thinking:").setEphemeral(true).queue();
         } else {
-            User target = event.getOption("user", OptionMapping::getAsUser);
-            Member member = event.getOption("user", OptionMapping::getAsMember);
-            Role role = event.getGuild().getRoleById(1270066037131575408L);
+            event.deferReply().queue();
 
-            if(!event.getMember().canInteract(member)) {
-                event.reply("Étrangement, vous ne pouvez pas interagir avec ce membre :thinking:").setEphemeral(true).queue();
-            } else {
-                event.deferReply().queue();
+            MySQLRegistration.unregister(event.getGuild(), member);
+            member.modifyNickname(target.getGlobalName()).queue();
+            member.getGuild().modifyMemberRoles(member).queue();
 
-                MySQLRegistration.unregister(event.getGuild(), member);
-                member.modifyNickname(target.getGlobalName()).queue();
-                member.getGuild().modifyMemberRoles(member).queue();
+            target.openPrivateChannel()
+                    .flatMap(channel -> channel.sendMessage("Vous avez été désinscrit par " + event.getMember().getAsMention()))
+                    .queue();
 
-                target.openPrivateChannel()
-                        .flatMap(channel -> channel.sendMessage("Vous avez été désinscrit par " + event.getMember().getAsMention()))
-                        .queue();
-
-                event.getHook().editOriginal("Le joueur " + target.getAsMention() + " a été désinscrit avec succès.").queue();
-            }
+            event.getHook().editOriginal("Le joueur " + target.getAsMention() + " a été désinscrit avec succès.").queue();
         }
     }
 }

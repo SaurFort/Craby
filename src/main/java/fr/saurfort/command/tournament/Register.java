@@ -1,9 +1,13 @@
 package fr.saurfort.command.tournament;
 
 import fr.saurfort.command.CommandBuilder;
+import fr.saurfort.database.query.MySQLConfig;
 import fr.saurfort.database.query.MySQLRegistration;
 import fr.saurfort.modal.creator.RegisterModalCreator;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 
@@ -31,9 +35,11 @@ public class Register implements CommandBuilder {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         Modal modal = RegisterModalCreator.registerModalCreator();
+        TextChannel registerChannel = event.getGuild().getTextChannelById(MySQLConfig.getRegisterChannel(event.getGuild()));
 
-        if(event.getChannelIdLong() != 1269723436364857404L) {
-            event.reply("Les inscriptions ne sont pas prise en charge dans ce channel, veuillez allez dans le channel <#1269723436364857404> !").setEphemeral(true).queue();
+
+        if(event.getChannelIdLong() != registerChannel.getIdLong()) {
+            event.reply("Les inscriptions ne sont pas prise en charge dans ce channel, veuillez allez dans le channel " + registerChannel.getAsMention() + " !").setEphemeral(true).queue();
         } else if(MySQLRegistration.canRegister(event.getGuild()).equals("max")) {
             event.reply("Les inscriptions sont déjà complètes, désolé, ça sera pour une prochaine fois peut-être :wink:").setEphemeral(true).queue();
         } else if(MySQLRegistration.canRegister(event.getGuild()).equals("error")) {

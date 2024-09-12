@@ -1,9 +1,7 @@
 package fr.saurfort.command;
 
 import fr.saurfort.command.config.RegisterConfig;
-import fr.saurfort.command.moderation.LastMessage;
-import fr.saurfort.command.moderation.RegisteredList;
-import fr.saurfort.command.moderation.ForcedUnregister;
+import fr.saurfort.command.moderation.*;
 import fr.saurfort.command.tournament.Register;
 import fr.saurfort.command.utils.Help;
 import fr.saurfort.command.utils.Ping;
@@ -18,6 +16,8 @@ public class CommandLister {
     RegisterConfig registerConfig = new RegisterConfig();
 
     // Moderation
+    Clear clear = new Clear();
+    ForcedRegister forcedRegister = new ForcedRegister();
     ForcedUnregister forcedUnregister = new ForcedUnregister();
     LastMessage lastMessage = new LastMessage();
     RegisteredList registeredList = new RegisteredList();
@@ -50,6 +50,15 @@ public class CommandLister {
                         .setGuildOnly(register.getGuildOnly()),
 
                 // Moderation
+                Commands.slash(clear.getName(), clear.getDescription())
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(clear.getPermission()))
+                        .setGuildOnly(clear.getGuildOnly())
+                        .addOption(OptionType.INTEGER, "amount", "Nombre de message à supprimé", true),
+                Commands.slash(forcedRegister.getName(), forcedRegister.getDescription())
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(forcedRegister.getPermission()))
+                        .setGuildOnly(forcedUnregister.getGuildOnly())
+                        .addOption(OptionType.USER, "user", "Membre à inscrire", true)
+                        .addOption(OptionType.STRING, "id", "ID du joueur à inscrire", true),
                 Commands.slash(lastMessage.getName(), lastMessage.getDescription())
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(lastMessage.getPermission()))
                         .setGuildOnly(lastMessage.getGuildOnly())
