@@ -1,4 +1,4 @@
-package fr.saurfort.database.query;
+package fr.saurfort.database.query.message;
 
 import fr.saurfort.database.init.MySQLDatabase;
 import net.dv8tion.jda.api.entities.Guild;

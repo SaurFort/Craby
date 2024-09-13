@@ -1,4 +1,4 @@
-package fr.saurfort.database.query;
+package fr.saurfort.database.query.register;
 
 import fr.saurfort.database.init.MySQLDatabase;
 import net.dv8tion.jda.api.entities.Guild;
@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MySQLConfig {
+public class MySQLRegisterConfig {
     private static Connection conn = MySQLDatabase.conn;
 
     // Actually depreciated because it's a breaking function

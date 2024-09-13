@@ -1,8 +1,8 @@
 package fr.saurfort.command.moderation;
 
 import fr.saurfort.command.CommandBuilder;
-import fr.saurfort.database.query.MySQLConfig;
-import fr.saurfort.database.query.MySQLRegistration;
+import fr.saurfort.database.query.register.MySQLRegisterConfig;
+import fr.saurfort.database.query.register.MySQLRegistration;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -35,7 +35,7 @@ public class ForcedUnregister implements CommandBuilder {
     public void execute(SlashCommandInteractionEvent event) {
         User target = event.getOption("user", OptionMapping::getAsUser);
         Member member = event.getOption("user", OptionMapping::getAsMember);
-        Role role = event.getGuild().getRoleById(MySQLConfig.getRegisteredRole(event.getGuild()));
+        Role role = event.getGuild().getRoleById(MySQLRegisterConfig.getRegisteredRole(event.getGuild()));
 
         if(!event.getMember().canInteract(member)) {
             event.reply("Étrangement, vous ne pouvez pas interagir avec ce membre :thinking:").setEphemeral(true).queue();

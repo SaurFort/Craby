@@ -1,16 +1,21 @@
 package fr.saurfort.listener;
 
 import fr.saurfort.command.config.RegisterConfig;
+import fr.saurfort.command.config.TicketConfig;
 import fr.saurfort.command.moderation.*;
+import fr.saurfort.command.ticket.AddTicketMember;
+import fr.saurfort.command.ticket.CloseTicket;
+import fr.saurfort.command.ticket.RemoveTicketMember;
 import fr.saurfort.command.tournament.Register;
 import fr.saurfort.command.utils.Help;
 import fr.saurfort.command.utils.Ping;
-import fr.saurfort.database.query.MySQLLastMessage;
+import fr.saurfort.component.button.TicketButtonAction;
+import fr.saurfort.database.query.message.MySQLLastMessage;
 import fr.saurfort.modal.action.RegisterModalAction;
-import fr.saurfort.modal.creator.RegisterModalCreator;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -21,6 +26,9 @@ public class EventListener extends ListenerAdapter {
             // Config
             case "registerconfig":
                 new RegisterConfig().execute(event);
+                break;
+            case "ticketconfig":
+                new TicketConfig().execute(event);
                 break;
 
             // Moderation
@@ -38,6 +46,17 @@ public class EventListener extends ListenerAdapter {
                 break;
             case "registeredlist":
                 new RegisteredList().execute(event);
+                break;
+
+            // Ticket
+            case "addticketmember":
+                new AddTicketMember().execute(event);
+                break;
+            case "closeticket":
+                new CloseTicket().execute(event);
+                break;
+            case "removeticketmember":
+                new RemoveTicketMember().execute(event);
                 break;
 
             // Tournament
@@ -72,6 +91,13 @@ public class EventListener extends ListenerAdapter {
     public void onModalInteraction(ModalInteractionEvent event) {
         if(event.getModalId().equals("registration")) {
             new RegisterModalAction(event);
+        }
+    }
+
+    @Override
+    public void onButtonInteraction(ButtonInteractionEvent event) {
+        if(event.getComponentId().equals("ticket:open")) {
+            new TicketButtonAction(event);
         }
     }
 }

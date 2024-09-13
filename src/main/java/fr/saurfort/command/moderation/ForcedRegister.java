@@ -2,8 +2,8 @@ package fr.saurfort.command.moderation;
 
 import fr.saurfort.Craby;
 import fr.saurfort.command.CommandBuilder;
-import fr.saurfort.database.query.MySQLConfig;
-import fr.saurfort.database.query.MySQLRegistration;
+import fr.saurfort.database.query.register.MySQLRegisterConfig;
+import fr.saurfort.database.query.register.MySQLRegistration;
 import jcrapi2.JCrApi;
 import jcrapi2.api.intern.players.PlayerApi;
 import jcrapi2.api.intern.players.info.Clan;
@@ -64,8 +64,8 @@ public class ForcedRegister implements CommandBuilder {
             String playerName = response.getName();
             String playerTag = response.getTag();
             Clan clan = response.getClan();
-            Role role = event.getGuild().getRoleById(MySQLConfig.getRegisteredRole(event.getGuild()));
-            TextChannel logChannel = event.getGuild().getTextChannelById(MySQLConfig.getLogChannel(event.getGuild()));
+            Role role = event.getGuild().getRoleById(MySQLRegisterConfig.getRegisteredRole(event.getGuild()));
+            TextChannel logChannel = event.getGuild().getTextChannelById(MySQLRegisterConfig.getLogChannel(event.getGuild()));
 
             EmbedBuilder eb = new EmbedBuilder();
 

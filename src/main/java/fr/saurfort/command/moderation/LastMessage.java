@@ -1,7 +1,7 @@
 package fr.saurfort.command.moderation;
 
 import fr.saurfort.command.CommandBuilder;
-import fr.saurfort.database.query.MySQLLastMessage;
+import fr.saurfort.database.query.message.MySQLLastMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;

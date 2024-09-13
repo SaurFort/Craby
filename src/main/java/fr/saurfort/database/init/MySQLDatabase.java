@@ -7,7 +7,7 @@ import java.sql.*;
 public class MySQLDatabase {
     private final String databaseAddress;
     public static Connection conn;
-    private static final String[] REQUIRED_TABLES = {"register_config", "users_messages", "registered"};
+    private static final String[] REQUIRED_TABLES = {"register_config", "users_messages", "registered", "ticket_config", "ticket"};
 
     public MySQLDatabase(String username, String password, String address, String port, String databaseName) {
         String encodedPassword = URLEncoder.encode(password, StandardCharsets.UTF_8);
@@ -80,6 +80,21 @@ public class MySQLDatabase {
                     "    id INT PRIMARY KEY AUTO_INCREMENT," +
                     "    uuid TEXT UNIQUE NOT NULL," +
                     "    guild_id TEXT NOT NULL" +
+                    ");");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticket_config (" +
+                    "   id INT PRIMARY KEY AUTO_INCREMENT," +
+                    "   guild_id BIGINT NOT NULL UNIQUE," +
+                    "   category_id TEXT NOT NULL," +
+                    "   archive_id TEXT NOT NULL," +
+                    "   support_id TEXT NOT NULL" +
+                    ");");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticket (" +
+                    "   id INT PRIMARY KEY AUTO_INCREMENT," +
+                    "   guild_id TEXT NOT NULL," +
+                    "   ticket_id TEXT NOT NULL," +
+                    "   ticket_owner TEXT NOT NULL" +
                     ");");
 
             System.out.println("Tables initialized successfully.");

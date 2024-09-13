@@ -1,7 +1,11 @@
 package fr.saurfort.command;
 
 import fr.saurfort.command.config.RegisterConfig;
+import fr.saurfort.command.config.TicketConfig;
 import fr.saurfort.command.moderation.*;
+import fr.saurfort.command.ticket.AddTicketMember;
+import fr.saurfort.command.ticket.CloseTicket;
+import fr.saurfort.command.ticket.RemoveTicketMember;
 import fr.saurfort.command.tournament.Register;
 import fr.saurfort.command.utils.Help;
 import fr.saurfort.command.utils.Ping;
@@ -14,6 +18,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 public class CommandLister {
     // Config
     RegisterConfig registerConfig = new RegisterConfig();
+    TicketConfig ticketConfig = new TicketConfig();
 
     // Moderation
     Clear clear = new Clear();
@@ -21,6 +26,11 @@ public class CommandLister {
     ForcedUnregister forcedUnregister = new ForcedUnregister();
     LastMessage lastMessage = new LastMessage();
     RegisteredList registeredList = new RegisteredList();
+
+    // Ticket
+    AddTicketMember addTicketMember = new AddTicketMember();
+    CloseTicket closeTicket = new CloseTicket();
+    RemoveTicketMember removeTicketMember = new RemoveTicketMember();
 
     // Tournament
     Register register = new Register();
@@ -40,6 +50,25 @@ public class CommandLister {
                         .addOption(OptionType.CHANNEL, "registration", "Salon d'inscription")
                         .addOption(OptionType.ROLE, "registered_role", "Role des inscrits")
                         .addOption(OptionType.INTEGER, "substitute_limit", "Limite de remplaçant"),
+                Commands.slash(ticketConfig.getName(), ticketConfig.getDescription())
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(ticketConfig.getPermission()))
+                        .setGuildOnly(ticketConfig.getGuildOnly())
+                        .addOption(OptionType.CHANNEL, "ticket_category", "Catégorie des tickets")
+                        .addOption(OptionType.CHANNEL, "ticket_log", "Salon de log des tickets")
+                        .addOption(OptionType.ROLE, "support_role", "Role du support"),
+
+                // Ticket
+                Commands.slash(addTicketMember.getName(), addTicketMember.getDescription())
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(addTicketMember.getPermission()))
+                        .setGuildOnly(addTicketMember.getGuildOnly())
+                        .addOption(OptionType.USER, "member", "Membre à ajouter au ticket", true),
+                Commands.slash(closeTicket.getName(), closeTicket.getDescription())
+                        .setGuildOnly(closeTicket.getGuildOnly())
+                        .addOption(OptionType.STRING, "reason", "Raison de la fermeture du ticket", true),
+                Commands.slash(removeTicketMember.getName(), removeTicketMember.getDescription())
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(removeTicketMember.getPermission()))
+                        .setGuildOnly(removeTicketMember.getGuildOnly())
+                        .addOption(OptionType.USER, "member", "Membre à ajouter au ticket", true),
 
                 // Utils
                 Commands.slash(help.getName(), help.getDescription()),

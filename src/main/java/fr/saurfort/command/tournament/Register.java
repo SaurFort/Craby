@@ -1,12 +1,10 @@
 package fr.saurfort.command.tournament;
 
 import fr.saurfort.command.CommandBuilder;
-import fr.saurfort.database.query.MySQLConfig;
-import fr.saurfort.database.query.MySQLRegistration;
+import fr.saurfort.database.query.register.MySQLRegisterConfig;
+import fr.saurfort.database.query.register.MySQLRegistration;
 import fr.saurfort.modal.creator.RegisterModalCreator;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.modals.Modal;
@@ -35,7 +33,7 @@ public class Register implements CommandBuilder {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         Modal modal = RegisterModalCreator.registerModalCreator();
-        TextChannel registerChannel = event.getGuild().getTextChannelById(MySQLConfig.getRegisterChannel(event.getGuild()));
+        TextChannel registerChannel = event.getGuild().getTextChannelById(MySQLRegisterConfig.getRegisterChannel(event.getGuild()));
 
 
         if(event.getChannelIdLong() != registerChannel.getIdLong()) {

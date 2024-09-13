@@ -1,7 +1,7 @@
 package fr.saurfort.command.config;
 
 import fr.saurfort.command.CommandBuilder;
-import fr.saurfort.database.query.MySQLConfig;
+import fr.saurfort.database.query.register.MySQLRegisterConfig;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Role;
@@ -68,7 +68,7 @@ public class RegisterConfig implements CommandBuilder {
             substituteLimit = 0;
         }
 
-        MySQLConfig.registrationConfig(event.getGuild(), logChannel, registrationChannel, registered, registerLimit, substituteLimit);
+        MySQLRegisterConfig.registrationConfig(event.getGuild(), logChannel, registrationChannel, registered, registerLimit, substituteLimit);
 
         EmbedBuilder eb = new EmbedBuilder();
 

@@ -1,4 +1,4 @@
-package fr.saurfort.database.query;
+package fr.saurfort.database.query.register;
 
 import fr.saurfort.database.init.MySQLDatabase;
 import net.dv8tion.jda.api.entities.Guild;
@@ -34,7 +34,7 @@ public class MySQLRegistration {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, guild.getId());
-            stmt.setInt(2, MySQLConfig.getRegisterLimit(guild));
+            stmt.setInt(2, MySQLRegisterConfig.getRegisterLimit(guild));
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
@@ -52,8 +52,8 @@ public class MySQLRegistration {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, guild.getId());
-            stmt.setInt(2, MySQLConfig.getSubstituteLimit(guild));
-            stmt.setInt(3, MySQLConfig.getRegisterLimit(guild));
+            stmt.setInt(2, MySQLRegisterConfig.getSubstituteLimit(guild));
+            stmt.setInt(3, MySQLRegisterConfig.getRegisterLimit(guild));
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
@@ -70,7 +70,7 @@ public class MySQLRegistration {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, guild.getId());
-            stmt.setInt(2, MySQLConfig.getRegisterLimit(guild));
+            stmt.setInt(2, MySQLRegisterConfig.getRegisterLimit(guild));
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
@@ -93,8 +93,8 @@ public class MySQLRegistration {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, guild.getId());
-            stmt.setInt(2, MySQLConfig.getSubstituteLimit(guild));
-            stmt.setInt(3, MySQLConfig.getRegisterLimit(guild));
+            stmt.setInt(2, MySQLRegisterConfig.getSubstituteLimit(guild));
+            stmt.setInt(3, MySQLRegisterConfig.getRegisterLimit(guild));
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
@@ -156,8 +156,8 @@ public class MySQLRegistration {
 
             int count = rs.getInt("count");
 
-            if(count >= MySQLConfig.getRegisterLimit(guild)) {
-                if(count >= MySQLConfig.getRegisterLimit(guild) + MySQLConfig.getSubstituteLimit(guild)) {
+            if(count >= MySQLRegisterConfig.getRegisterLimit(guild)) {
+                if(count >= MySQLRegisterConfig.getRegisterLimit(guild) + MySQLRegisterConfig.getSubstituteLimit(guild)) {
                     return "max";
                 } else {
                     return "substitute";

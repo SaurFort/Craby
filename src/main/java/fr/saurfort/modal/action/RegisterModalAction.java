@@ -1,23 +1,19 @@
 package fr.saurfort.modal.action;
 
 import fr.saurfort.Craby;
-import fr.saurfort.database.query.MySQLConfig;
-import fr.saurfort.database.query.MySQLRegistration;
+import fr.saurfort.database.query.register.MySQLRegisterConfig;
+import fr.saurfort.database.query.register.MySQLRegistration;
 import jcrapi2.JCrApi;
 import jcrapi2.api.intern.players.PlayerApi;
 import jcrapi2.api.intern.players.info.Clan;
-import jcrapi2.api.intern.players.info.Player;
 import jcrapi2.api.intern.players.info.PlayerRequest;
 import jcrapi2.api.intern.players.info.PlayerResponse;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 
 import java.awt.*;
-import java.awt.desktop.SystemSleepEvent;
-import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 public class RegisterModalAction {
@@ -37,8 +33,8 @@ public class RegisterModalAction {
             String playerName = response.getName();
             String playerTag = response.getTag();
             Clan clan = response.getClan();
-            Role role = event.getGuild().getRoleById(MySQLConfig.getRegisteredRole(event.getGuild()));
-            TextChannel logChannel = event.getGuild().getTextChannelById(MySQLConfig.getLogChannel(event.getGuild()));
+            Role role = event.getGuild().getRoleById(MySQLRegisterConfig.getRegisteredRole(event.getGuild()));
+            TextChannel logChannel = event.getGuild().getTextChannelById(MySQLRegisterConfig.getLogChannel(event.getGuild()));
 
             event.getMember().modifyNickname(playerName).queue();
             event.getGuild().modifyMemberRoles(event.getMember(), role).queue();
