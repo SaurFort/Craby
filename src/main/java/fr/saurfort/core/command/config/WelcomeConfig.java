@@ -2,7 +2,7 @@ package fr.saurfort.core.command.config;
 
 import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.welcome.MySQLWelcomeConfig;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -20,7 +20,7 @@ public class WelcomeConfig implements CommandBuilder {
 
     @Override
     public String getDescription() {
-        return "Configuration des messages de bienvenue";
+        return "Configuration des messages de bienvenue et de départ";
     }
 
     @Override
@@ -44,25 +44,31 @@ public class WelcomeConfig implements CommandBuilder {
 
         TextChannel welcomeChannel;
 
-        if(event.getOption("welcome_channel", OptionMapping::getAsChannel) != null) {
+        /*if(event.getOption("welcome_channel", OptionMapping::getAsChannel) != null) {
             welcomeChannel = event.getOption("welcome_channel", OptionMapping::getAsChannel).asTextChannel();
         } else {
             welcomeChannel = event.getGuild().createTextChannel("welcome").complete();
-        }
+        }*/
 
-        welcomeChannel.getManager().putPermissionOverride(event.getGuild().getPublicRole(), null, Collections.singleton(Permission.MESSAGE_SEND)).complete();
+        //welcomeChannel.getManager().putPermissionOverride(event.getGuild().getPublicRole(), null, Collections.singleton(Permission.MESSAGE_SEND)).complete();
 
-        String welcomeMessage = "Bienvenue %usermention% sur le serveur **%guildname%** ! :wave:";
+        //String welcomeMessage = "Bienvenue %usermention% sur le serveur **%guildname%** ! :wave:";
 
+        //new MySQLWelcomeConfig(event.getGuild(), welcomeChannel, welcomeMessage);
+
+        sendConfigMessage(event);
+    }
+
+    public static void sendConfigMessage(SlashCommandInteractionEvent event) {
         EmbedBuilder eb = new EmbedBuilder();
 
         eb.setTitle("Welcome Config");
-        eb.setDescription("Configuration des messages de bienvenue\nLes messages de bienvenue seront posté dans le salon : " + welcomeChannel.getAsMention() + "\nLe format du message est :\n" + welcomeMessage);
+        //eb.setDescription("Configuration des messages de bienvenue\nLes messages de bienvenue seront posté dans le salon : " + welcomeChannel.getAsMention() + "\nLe format du message est :\n" + welcomeMessage);
 
-        Button changeMessage = Button.primary("welcome:modify_message", "Modifier le message");
+        Button addJoinMessage = Button.primary("welcome:join_message", "Message de bienvenue");
+        Button addLeftMessage = Button.primary("welcome:left_message", "Message d'au revoir");
+        Button finishConfig = Button.success("welcome:finish", "Terminer la configuration");
 
-        new MySQLWelcomeConfig(event.getGuild(), welcomeChannel, welcomeMessage);
-
-        event.getHook().sendMessageEmbeds(eb.build()).addActionRow(changeMessage).queue();
+        event.getHook().sendMessageEmbeds(eb.build()).addActionRow(addJoinMessage, addLeftMessage).addActionRow(finishConfig).queue();
     }
 }

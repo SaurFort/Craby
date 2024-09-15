@@ -3,7 +3,7 @@ package fr.saurfort.core.command.moderation;
 import fr.saurfort.Craby;
 import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.register.MySQLRegistration;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import jcrapi2.JCrApi;
 import jcrapi2.api.intern.players.PlayerApi;
 import jcrapi2.api.intern.players.info.Clan;
@@ -64,13 +64,22 @@ public class GetProfile implements CommandBuilder {
 
                 String playerName = response.getName();
                 String playerTag = response.getTag();
-                Clan clan = response.getClan();
+
+                String embedDescription = "Profil de " + player.getAsMention() + "\n## Joueur\n**Pseudo CR:** `" + playerName + "`\n**ID CR:** `" + playerTag + "`\n## Clan\n";
+
+                if(response.getClan() != null) {
+                    Clan clan = response.getClan();
+
+                    embedDescription += "**Nom du clan:** `" + clan.getName() + "`\n**ID du clan:** `" + clan.getTag() + "`";
+                } else {
+                    embedDescription += "**Aucun clan**";
+                }
 
                 EmbedBuilder eb = new EmbedBuilder();
 
                 eb.setTitle("Inscription");
                 eb.setColor(Color.GREEN);
-                eb.setDescription("Profil de " + event.getUser().getAsMention() + "\n# Joueur\n**Pseudo CR:** `" + playerName + "`\n**ID CR:** `" + playerTag + "`\n# Clan\n**Nom du clan:** `" + clan.getName() + "`\n**ID du clan:** `" + clan.getTag() + "`");
+                eb.setDescription(embedDescription);
 
                 event.getHook().sendMessageEmbeds(eb.build()).queue();
             } catch (InterruptedException | ExecutionException e) {

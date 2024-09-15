@@ -1,7 +1,7 @@
 package fr.saurfort.core.component.button;
 
 import fr.saurfort.core.database.query.welcome.MySQLWelcomeConfig;
-import fr.saurfort.core.utils.enums.TimeConverter;
+import fr.saurfort.utils.enums.TimeConverter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;

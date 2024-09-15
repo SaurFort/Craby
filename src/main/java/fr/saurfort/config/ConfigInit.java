@@ -1,6 +1,6 @@
-package fr.saurfort.core.config;
+package fr.saurfort.config;
 
-import fr.saurfort.core.utils.Scanner;
+import fr.saurfort.utils.Scanner;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +16,7 @@ public class ConfigInit {
         String database;
         String databaseUsername;
         String databasePassword;
+        String crToken;
 
         System.out.println("What is your bot token?");
         botToken = Scanner.stringScanner();
@@ -35,12 +36,16 @@ public class ConfigInit {
         System.out.println("What is your database password?");
         databasePassword = Scanner.stringScanner();
 
+        System.out.println("What is your Clash Royale API Token?");
+        crToken = Scanner.stringScanner();
+
         configFile.setProperty("bot.token", botToken);
         configFile.setProperty("db.address", databaseAddress);
         configFile.setProperty("db.port", databasePort);
         configFile.setProperty("db.name", database);
         configFile.setProperty("db.username", databaseUsername);
         configFile.setProperty("db.password", databasePassword);
+        configFile.setProperty("cr.token", crToken);
 
         try(FileOutputStream output = new FileOutputStream(CONFIG_FILE)) {
             configFile.store(output, null);

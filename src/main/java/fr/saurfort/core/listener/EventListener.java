@@ -1,5 +1,6 @@
 package fr.saurfort.core.listener;
 
+import fr.saurfort.Craby;
 import fr.saurfort.core.command.config.GetConfig;
 import fr.saurfort.core.command.config.RegisterConfig;
 import fr.saurfort.core.command.config.TicketConfig;
@@ -30,6 +31,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -164,5 +166,10 @@ public class EventListener extends ListenerAdapter {
         if(MySQLRegisterConfig.configExist(event.getGuild())) {
             new RegisteredRejoin(event);
         }
+    }
+
+    @Override
+    public void onReady(ReadyEvent event) {
+        Craby.ready(event.getJDA());
     }
 }

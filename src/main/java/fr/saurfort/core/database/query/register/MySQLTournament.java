@@ -1,7 +1,7 @@
 package fr.saurfort.core.database.query.register;
 
 import fr.saurfort.core.database.init.MySQLDatabase;
-import fr.saurfort.core.utils.enums.TournamentStatus;
+import fr.saurfort.utils.enums.TournamentStatus;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package fr.saurfort.core.utils;
+package fr.saurfort.utils;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;

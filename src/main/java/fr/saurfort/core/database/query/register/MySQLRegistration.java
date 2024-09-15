@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MySQLRegistration {
     private static Connection conn = MySQLDatabase.conn;
@@ -41,6 +42,7 @@ public class MySQLRegistration {
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
             rs.next();
+
             return rs.getInt("total_registered");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -48,66 +50,85 @@ public class MySQLRegistration {
     }
 
     public static int getSubstituteMember(Guild guild) {
-        String query = "SELECT COUNT(id) AS total_registered FROM registered WHERE guild_id = ? LIMIT ? OFFSET ?";
+        String query = "SELECT id FROM registered WHERE guild_id = ? LIMIT ? OFFSET ?";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
 
             stmt.setString(1, guild.getId());
-            stmt.setInt(2, MySQLRegisterConfig.getSubstituteLimit(guild));
-            stmt.setInt(3, MySQLRegisterConfig.getRegisterLimit(guild));
+            stmt.setInt(2, MySQLRegisterConfig.getSubstituteLimit(guild)); // Limite
+            stmt.setInt(3, MySQLRegisterConfig.getRegisterLimit(guild));   // Offset
 
-            stmt.execute();
-            ResultSet rs = stmt.getResultSet();
-            rs.next();
-            return rs.getInt("total_registered");
+            ResultSet rs = stmt.executeQuery();
+
+            int count = 0;
+            while (rs.next()) {
+                count++;
+            }
+
+            return count;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static String listRegisteredMember(Guild guild) {
+    public static ArrayList listRegisteredMember(Guild guild) {
         String query = "SELECT * FROM registered WHERE guild_id = ? LIMIT ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
 
+            int registeredLimit = MySQLRegisterConfig.getRegisterLimit(guild);
+            ArrayList membersList = new ArrayList();
+
+            if(registeredLimit == 0) {
+                return membersList;
+            }
+
             stmt.setString(1, guild.getId());
-            stmt.setInt(2, MySQLRegisterConfig.getRegisterLimit(guild));
+            stmt.setInt(2, registeredLimit);
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
 
-            StringBuilder membersList = new StringBuilder();
             while(rs.next()) {
                 Member member = guild.retrieveMemberById(rs.getString("uuid")).complete();
-                membersList.append(member.getAsMention()).append("\n");
+                membersList.add("- " + member.getAsMention() + "\n");
             }
 
-            return membersList.toString();
+            return membersList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static String listSubstituteMember(Guild guild) {
+    public static ArrayList listSubstituteMember(Guild guild) {
         String query = "SELECT * FROM registered WHERE guild_id = ? LIMIT ? OFFSET ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
 
+            int registeredLimit = MySQLRegisterConfig.getRegisterLimit(guild);
+            int substituteLimit = MySQLRegisterConfig.getSubstituteLimit(guild);
+            ArrayList membersList = new ArrayList();
+
+            if(registeredLimit == 0) {
+                return membersList;
+            } else if(substituteLimit == 0) {
+                return membersList;
+            }
+
             stmt.setString(1, guild.getId());
-            stmt.setInt(2, MySQLRegisterConfig.getSubstituteLimit(guild));
-            stmt.setInt(3, MySQLRegisterConfig.getRegisterLimit(guild));
+            stmt.setInt(2, substituteLimit);
+            stmt.setInt(3, registeredLimit);
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
 
-            StringBuilder membersList = new StringBuilder();
             while(rs.next()) {
                 Member member = guild.retrieveMemberById(rs.getString("uuid")).complete();
-                membersList.append("- ").append(member.getAsMention()).append("\n");
+                membersList.add("- " + member.getAsMention() + "\n");
             }
 
-            return membersList.toString();
+            return membersList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

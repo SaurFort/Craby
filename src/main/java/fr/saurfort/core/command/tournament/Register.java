@@ -4,7 +4,7 @@ import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.modal.creator.RegisterModalCreator;
 import fr.saurfort.core.database.query.register.MySQLRegisterConfig;
 import fr.saurfort.core.database.query.register.MySQLRegistration;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

@@ -67,9 +67,14 @@ public class MySQLRegisterConfig {
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
-            rs.next();
 
-            return rs.getInt("register_limit");
+            try {
+                if(rs.next()) {
+                    return rs.getInt("register_limit");
+                }
+            } catch (Exception ignored) {}
+
+            return 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -85,9 +90,14 @@ public class MySQLRegisterConfig {
 
             stmt.execute();
             ResultSet rs = stmt.getResultSet();
-            rs.next();
 
-            return rs.getInt("substitute_limit");
+            try {
+                if(rs.next()) {
+                    return rs.getInt("substitute_limit");
+                }
+            } catch (Exception ignored) {}
+
+            return 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

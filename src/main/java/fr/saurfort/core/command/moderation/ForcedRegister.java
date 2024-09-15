@@ -4,7 +4,7 @@ import fr.saurfort.Craby;
 import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.register.MySQLRegisterConfig;
 import fr.saurfort.core.database.query.register.MySQLRegistration;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import jcrapi2.JCrApi;
 import jcrapi2.api.intern.players.PlayerApi;
 import jcrapi2.api.intern.players.info.Clan;
@@ -69,15 +69,24 @@ public class ForcedRegister implements CommandBuilder {
 
             String playerName = response.getName();
             String playerTag = response.getTag();
-            Clan clan = response.getClan();
             Role role = event.getGuild().getRoleById(MySQLRegisterConfig.getRegisteredRole(event.getGuild()));
             TextChannel logChannel = event.getGuild().getTextChannelById(MySQLRegisterConfig.getLogChannel(event.getGuild()));
+
+            String embedDescription = "Profil de " + member.getAsMention() + "\n## Joueur\n**Pseudo CR:** `" + playerName + "`\n**ID CR:** `" + playerTag + "`\n## Clan\n";
+
+            if(response.getClan() != null) {
+                Clan clan = response.getClan();
+
+                embedDescription += "**Nom du clan:** `" + clan.getName() + "`\n**ID du clan:** `" + clan.getTag() + "`";
+            } else {
+                embedDescription += "**Aucun clan**";
+            }
 
             EmbedBuilder eb = new EmbedBuilder();
 
             eb.setTitle("Inscription");
             eb.setColor(Color.GREEN);
-            eb.setDescription("Inscription de " + event.getUser().getAsMention() + "\n# Joueur\n**Pseudo CR:** `" + playerName + "`\n**ID CR:** `" + playerTag + "`\n# Clan\n**Nom du clan:** `" + clan.getName() + "`\n**ID du clan:** `" + clan.getTag() + "`");
+            eb.setDescription(embedDescription);
 
             if(!event.getMember().canInteract(event.getMember())) {
                 event.getHook().sendMessage("Étrangement, vous ne pouvez pas interagir avec ce membre :thinking:").setEphemeral(true).queue();

@@ -1,4 +1,4 @@
-package fr.saurfort.core.utils.enums;
+package fr.saurfort.utils.enums;
 
 public enum TournamentStatus {
     REGISTRATION("registration", 0),

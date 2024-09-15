@@ -79,8 +79,8 @@ public class MySQLDatabase {
 
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS registered (" +
                     "   id INT PRIMARY KEY AUTO_INCREMENT," +
-                    "   uuid TEXT NOT NULL," +
-                    "   guild_id TEXT NOT NULL," +
+                    "   uuid BIGINT NOT NULL," +
+                    "   guild_id BIGINT NOT NULL," +
                     "   cr_id TEXT NOT NULL," +
                     "   want_unregister TEXT," +
                     "   UNIQUE (uuid, guild_id)" +
@@ -104,8 +104,10 @@ public class MySQLDatabase {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS welcome_config (" +
                     "   id INT PRIMARY KEY AUTO_INCREMENT," +
                     "   guild_id BIGINT NOT NULL UNIQUE," +
-                    "   channel_id TEXT NOT NULL," +
-                    "   message TEXT NOT NULL" +
+                    "   welcome_channel TEXT," +
+                    "   goodbye_channel TEXT," +
+                    "   welcome_message TEXT," +
+                    "   goodbye_message TEXT" +
                     ");");
 
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tournament_list (" +

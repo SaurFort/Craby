@@ -1,7 +1,7 @@
 package fr.saurfort.core.command.utils;
 
 import fr.saurfort.core.command.CommandBuilder;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

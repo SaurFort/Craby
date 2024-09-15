@@ -32,19 +32,27 @@ public class RegisterModalAction {
 
             String playerName = response.getName();
             String playerTag = response.getTag();
-            Clan clan = response.getClan();
             Role role = event.getGuild().getRoleById(MySQLRegisterConfig.getRegisteredRole(event.getGuild()));
             TextChannel logChannel = event.getGuild().getTextChannelById(MySQLRegisterConfig.getLogChannel(event.getGuild()));
 
             event.getMember().modifyNickname(playerName).queue();
             event.getGuild().modifyMemberRoles(event.getMember(), role).queue();
 
+            String embedDescription = "Profil de " + event.getMember().getAsMention() + "\n## Joueur\n**Pseudo CR:** `" + playerName + "`\n**ID CR:** `" + playerTag + "`\n## Clan\n";
+
+            if(response.getClan() != null) {
+                Clan clan = response.getClan();
+
+                embedDescription += "**Nom du clan:** `" + clan.getName() + "`\n**ID du clan:** `" + clan.getTag() + "`";
+            } else {
+                embedDescription += "**Aucun clan**";
+            }
+
             EmbedBuilder eb = new EmbedBuilder();
 
             eb.setTitle("Inscription");
             eb.setColor(Color.GREEN);
-            eb.setDescription("Inscription de " + event.getUser().getAsMention() + "\n# Joueur\n**Pseudo CR:** `" + playerName + "`\n**ID CR:** `" + playerTag + "`\n# Clan\n**Nom du clan:** `" + clan.getName() + "`\n**ID du clan:** `" + clan.getTag() + "`");
-
+            eb.setDescription(embedDescription);
             if(MySQLRegistration.canRegister(event.getGuild()).equals("substitute")) {
                 logChannel.sendMessage("Le joueur" + event.getMember().getAsMention() + " vient de s'inscrire à la liste de remplacement !").queue();
                 logChannel.sendMessageEmbeds(eb.build()).queue();

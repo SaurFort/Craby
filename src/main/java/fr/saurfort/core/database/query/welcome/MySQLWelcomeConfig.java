@@ -12,33 +12,20 @@ import java.sql.SQLException;
 public class MySQLWelcomeConfig {
     private static Connection conn = MySQLDatabase.conn;
 
-    public MySQLWelcomeConfig(Guild guild, TextChannel channel, String message) {
-        String query = "DELETE FROM welcome_config WHERE guild_id = ?";
+    public MySQLWelcomeConfig(Guild guild) {
+        if(!configExist(guild)) {
+            String query = "INSERT INTO welcome_config (guild_id)" +
+                    "   VALUES (?)";
 
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
+            try {
+                PreparedStatement stmt = conn.prepareStatement(query);
 
-            stmt.setString(1, guild.getId());
+                stmt.setString(1, guild.getId());
 
-            stmt.executeUpdate();
-            stmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        query = "INSERT INTO welcome_config (guild_id, channel_id, message)" +
-                "   VALUES (?,?,?)";
-
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-
-            stmt.setString(1, guild.getId());
-            stmt.setString(2, channel.getId());
-            stmt.setString(3, message);
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -93,6 +80,12 @@ public class MySQLWelcomeConfig {
         }
     }
 
+    /**
+     * Check if the guild already have a configuration
+     *
+     * @param guild Guild that interact with the command
+     * @return true if the guild already have a config, false if the guild haven't a config
+     */
     public static boolean configExist(Guild guild) {
         String query = "SELECT id FROM welcome_config WHERE guild_id = ?";
 
@@ -103,11 +96,13 @@ public class MySQLWelcomeConfig {
 
             stmt.executeQuery();
             ResultSet rs = stmt.getResultSet();
-            rs.next();
 
-            return rs.getString("id") != null;
+            try {
+                return rs.next();
+            } catch (Exception ignored) {}
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 }

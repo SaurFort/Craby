@@ -3,7 +3,7 @@ package fr.saurfort.core.command.tournament;
 import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.register.MySQLRegistration;
 import fr.saurfort.core.modal.creator.UnregisterModalCreator;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

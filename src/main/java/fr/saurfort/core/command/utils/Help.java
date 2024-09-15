@@ -12,7 +12,7 @@ import fr.saurfort.core.command.ticket.RemoveTicketMember;
 import fr.saurfort.core.command.tournament.Register;
 import fr.saurfort.core.command.tournament.TournamentInfo;
 import fr.saurfort.core.command.tournament.Unregister;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

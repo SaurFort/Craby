@@ -2,7 +2,7 @@ package fr.saurfort.core.command.ticket;
 
 import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.ticket.MySQLTicket;
-import fr.saurfort.core.utils.enums.CommandCategory;
+import fr.saurfort.utils.enums.CommandCategory;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
