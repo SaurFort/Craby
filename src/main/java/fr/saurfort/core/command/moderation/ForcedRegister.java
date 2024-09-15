@@ -4,6 +4,7 @@ import fr.saurfort.Craby;
 import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.register.MySQLRegisterConfig;
 import fr.saurfort.core.database.query.register.MySQLRegistration;
+import fr.saurfort.core.utils.enums.CommandCategory;
 import jcrapi2.JCrApi;
 import jcrapi2.api.intern.players.PlayerApi;
 import jcrapi2.api.intern.players.info.Clan;
@@ -40,6 +41,11 @@ public class ForcedRegister implements CommandBuilder {
     @Override
     public boolean getGuildOnly() {
         return true;
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.MODERATION;
     }
 
     @Override

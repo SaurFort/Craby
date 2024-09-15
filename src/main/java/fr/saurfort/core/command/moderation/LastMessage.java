@@ -2,6 +2,7 @@ package fr.saurfort.core.command.moderation;
 
 import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.message.MySQLLastMessage;
+import fr.saurfort.core.utils.enums.CommandCategory;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -35,6 +36,11 @@ public class LastMessage implements CommandBuilder {
     @Override
     public boolean getGuildOnly() {
         return true;
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.MODERATION;
     }
 
     @Override

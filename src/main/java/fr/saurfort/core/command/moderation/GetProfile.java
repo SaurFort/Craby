@@ -2,8 +2,8 @@ package fr.saurfort.core.command.moderation;
 
 import fr.saurfort.Craby;
 import fr.saurfort.core.command.CommandBuilder;
-import fr.saurfort.core.database.query.register.MySQLRegisterConfig;
 import fr.saurfort.core.database.query.register.MySQLRegistration;
+import fr.saurfort.core.utils.enums.CommandCategory;
 import jcrapi2.JCrApi;
 import jcrapi2.api.intern.players.PlayerApi;
 import jcrapi2.api.intern.players.info.Clan;
@@ -12,8 +12,6 @@ import jcrapi2.api.intern.players.info.PlayerResponse;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
@@ -27,7 +25,7 @@ public class GetProfile implements CommandBuilder {
     }
 
     @Override
-    public String getDescription() {
+    public String  getDescription() {
         return "Donne le profile Clash Royale d'un joueur inscrit";
     }
 
@@ -39,6 +37,11 @@ public class GetProfile implements CommandBuilder {
     @Override
     public boolean getGuildOnly() {
         return true;
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.MODERATION;
     }
 
     @Override

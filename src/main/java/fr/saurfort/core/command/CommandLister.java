@@ -132,6 +132,10 @@ public class CommandLister {
                         .setGuildOnly(startTournament.getGuildOnly())
                         .addOption(OptionType.STRING, "name", "Nom du tournoi", true)
                         .addOption(OptionType.BOOLEAN, "forced", "Force le début du tournoi")
-        ).queue();
+        ).queue(success -> {
+            System.out.println("Les commandes slash ont été enregistrées avec succès.");
+        }, failure -> {
+            System.err.println("Erreur lors de l'enregistrement des commandes slash: " + failure.getMessage());
+        });
     }
 }

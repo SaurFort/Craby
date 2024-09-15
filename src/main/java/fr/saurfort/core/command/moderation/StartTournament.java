@@ -4,6 +4,7 @@ import fr.saurfort.core.command.CommandBuilder;
 import fr.saurfort.core.database.query.register.MySQLRegisterConfig;
 import fr.saurfort.core.database.query.register.MySQLRegistration;
 import fr.saurfort.core.database.query.register.MySQLTournament;
+import fr.saurfort.core.utils.enums.CommandCategory;
 import fr.saurfort.core.utils.enums.TournamentStatus;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -31,6 +32,11 @@ public class StartTournament implements CommandBuilder {
     @Override
     public boolean getGuildOnly() {
         return true;
+    }
+
+    @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.MODERATION;
     }
 
     @Override

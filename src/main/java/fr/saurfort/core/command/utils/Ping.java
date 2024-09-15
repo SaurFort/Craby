@@ -1,6 +1,8 @@
 package fr.saurfort.core.command.utils;
 
 import fr.saurfort.core.command.CommandBuilder;
+import fr.saurfort.core.utils.enums.CommandCategory;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -26,11 +28,16 @@ public class Ping implements CommandBuilder {
     }
 
     @Override
+    public CommandCategory getCategory() {
+        return CommandCategory.UTILS;
+    }
+
+    @Override
     public void execute(SlashCommandInteractionEvent event) {
-        long time = System.currentTimeMillis();
-        event.reply("Pong!").setEphemeral(true)
-                .flatMap(v ->
-                        event.getHook().editOriginalFormat(":ping_pong: Pong: %d ms", System.currentTimeMillis() - time)
-                ).queue();
+        event.deferReply(true).queue();
+        event.getHook().sendMessage("Pong! :ping_pong:").queue();
+        JDA jda = event.getJDA();
+
+        jda.getRestPing().queue((ping) -> event.getHook().editOriginalFormat("Bot ping: `%sms`\nDiscord ping: `%sms`", ping, jda.getGatewayPing()).queue());
     }
 }
